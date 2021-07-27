@@ -4,26 +4,80 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RestWithASPNET.Model;
+using RestWithASPNET.Services;
 
 namespace RestWithASPNET.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PersonController : ControllerBase{
         
 
         private readonly ILogger<PersonController> _logger;
+        private ipersonservice _personservice;
 
-        public PersonController(ILogger<PersonController> logger){
+
+        public PersonController(ILogger<PersonController> logger, ipersonservice personservice){
+            _personservice = personservice;
             _logger = logger;
         }
 
-        [HttpGet("sum/{firstNumber}/{secondNumber}")]
-        public IActionResult Sum(string firstNumber, string secondNumber){
-            return BadRequest("Invalid Input"); //when input is not valid
+        [HttpGet]
+        public IActionResult get(){
+            return Ok(_personservice.findall());
+        }
+        
+        [HttpGet("{id}")] //verbos get nao ambiguos
+        public IActionResult get(long id){
+            var person = _personservice.findbyid(id);
+            if(person == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(person);
+            }
+            
+        }
+        
+        [HttpPost] 
+        public IActionResult post([FromBody] Person person){
+            if(person == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(_personservice.create(person));
+            }
+            
+        }
+        
+        [HttpPut] 
+        public IActionResult put([FromBody] Person person){
+            if(person == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(_personservice.update(person));
+            }
+            
+        }
+
+        [HttpDelete("{id}")] //verbos get nao ambiguos
+        public IActionResult delete(long id)
+        {
+            _personservice.delete(id);
+           return NoContent();
+           
+
         }
 
 
-        
+
     }
 }
