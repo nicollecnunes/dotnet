@@ -14,16 +14,20 @@ namespace RestWithASPNET.Model
         [Column("id")]
         public long id { get; set; }
 
+        [Column("address")]
+        public string address { get; set; }
+
         [Column("fname")]
         public string fname { get; set; }
+
+        [Column("gender")] //igual escrito no BD
+        public string gender { get; set; }
 
         [Column("lname")]
         public string lname { get; set; }
 
-        [Column("adress")]
-        public string adress { get; set; }
+        
 
-        [Column("gender")] //igual escrito no BD
-        public string gender { get; set; }
+        
     }
 }

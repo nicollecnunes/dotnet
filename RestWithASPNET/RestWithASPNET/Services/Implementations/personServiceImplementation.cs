@@ -1,87 +1,84 @@
 ﻿using RestWithASPNET.Model;
+using RestWithASPNET.Model.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RestWithASPNET.Services.Implementations
-{
-    public class personServiceImplementation : ipersonservice
-    {
-        private volatile int count; //mock id
-        public Person create(Person person)
-        {
-            return person; //simula acesso. retorna a mesma pessoa
+namespace RestWithASPNET.Services.Implementations{
+    public class personServiceImplementation : ipersonservice{
+        private MySQLContext _context; 
+
+        // construtor. recebe injecao do context
+        public personServiceImplementation(MySQLContext context){ 
+            _context = context;
+
         }
 
-        public void delete(long id)
-        {
-            
-        }
 
-        public List<Person> findall()
-        {
-            List<Person> people = new List<Person>();
-            for(int i = 0; i < 8; i++)
-            {
-                Person person = mockPerson(i);
-                people.Add(person);
+        //metodo create. recebe o objeto pessoa
+        public Person create(Person person){
+            try {
+                _context.Add(person);
+                _context.SaveChanges();
+
+            }catch(Exception){
+                throw;
             }
-            return people;
+            return person;
+        }
+
+
+        //deleta a pessoa pelo id, nao pelo objeto
+        public void delete(long id){
+            var result = _context.People.SingleOrDefault(p => p.id.Equals(id));
+            if (result != null){
+                try{
+                    _context.People.Remove(result);
+                    _context.SaveChanges();
+
+                }catch (Exception){
+                    throw;
+                }
+            }
+        }
+
+
+        //lista todas as pessoas cadastradas
+        public List<Person> findall(){
+            return _context.People.ToList();
         }
 
        
-
-        public Person findbyid(long id)
-        {
-            return new Person
-            {
-                id = incrementAndGet(),
-                fname = "Nicolle",
-                lname = "Nunes",
-                adress = "Ouro Preto MG",
-                gender = "Female",
-            };
+        //encontra uma pessoa especifica pela PK
+        public Person findbyid(long id){
+            return _context.People.SingleOrDefault(p => p.id.Equals(id)); //retorna um p que tenha id == id recebido
         }
 
-        public Person update(Person person)
-        {
-            return person;
-        }
-        
-        private Person mockPerson(int i)
-        {
-            string dynamicGender = "";
-            string dynamicFname = "";
-            string dynamicLname = "";
 
-            if (i % 2 == 0)
-            {
-                dynamicGender = "even male";
-                dynamicFname = "even name";
-                dynamicLname = "not odd last name";
+        //atualiza informacoes de uma pessoa, recebe o objeto todo e substitui no bd
+        public Person update(Person person){
+            if (!Exists(person.id)){
+                return new Person(); //se nao existe, cria
             }
-            else
-            {
-                dynamicGender = "odd female";
-                dynamicFname = "odd name";
-                dynamicLname = "not even last name";
-            }
+            var result = _context.People.SingleOrDefault(p => p.id.Equals(person.id));
+            if (result != null){
+                try{
+                    _context.Entry(result).CurrentValues.SetValues(person);
+                    _context.SaveChanges();
 
-            return new Person
-            {
-                id = incrementAndGet(),
-                fname = dynamicFname + i,
-                lname = dynamicLname + i,
-                adress = "Adress" + i,
-                gender = dynamicGender,
-            };
+                }catch (Exception){
+                    throw;
+                }
+            } 
+            return person; //simula acesso. retorna a mesma pessoa
         }
 
-        private long incrementAndGet()
-        {
-            return Interlocked.Increment(ref count);
+
+        //verifica se uma pessoa existe pelo seu id
+        private bool Exists(long id){
+            return _context.People.Any(p => p.id.Equals(id));
         }
     }
 }
