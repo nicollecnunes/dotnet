@@ -53,20 +53,27 @@ namespace RestWithASPNET.Services.Implementations
         private Person mockPerson(int i)
         {
             string dynamicGender = "";
+            string dynamicFname = "";
+            string dynamicLname = "";
+
             if (i % 2 == 0)
             {
-                dynamicGender = "Male";
+                dynamicGender = "even male";
+                dynamicFname = "even name";
+                dynamicLname = "not odd last name";
             }
             else
             {
-                dynamicGender = "Female";
+                dynamicGender = "odd female";
+                dynamicFname = "odd name";
+                dynamicLname = "not even last name";
             }
 
             return new Person
             {
                 id = incrementAndGet(),
-                fname = "Name " + i,
-                lname = "Last Name" + i,
+                fname = dynamicFname + i,
+                lname = dynamicLname + i,
                 adress = "Adress" + i,
                 gender = dynamicGender,
             };

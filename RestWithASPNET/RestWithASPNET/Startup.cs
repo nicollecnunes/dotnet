@@ -1,9 +1,11 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RestWithASPNET.Model.Context;
 using RestWithASPNET.Services;
 using RestWithASPNET.Services.Implementations;
 
@@ -22,7 +24,12 @@ namespace RestWithASPNET
         public void ConfigureServices(IServiceCollection services)
         {
 
+
             services.AddControllers();
+
+            var connection = Configuration["MySQLConnection:MySQLConnectionString"]; //pega a string de conexao
+            services.AddDbContext<MySQLContext>(options => options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
+
             //dependency injection
             services.AddScoped<ipersonservice, personServiceImplementation>();
     
