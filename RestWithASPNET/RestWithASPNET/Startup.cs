@@ -6,8 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RestWithASPNET.Model.Context;
-using RestWithASPNET.Services;
-using RestWithASPNET.Services.Implementations;
+using RestWithASPNET.Business;
+using RestWithASPNET.Business.Implementations;
+using RestWithASPNET.Repository.Implementations;
 
 namespace RestWithASPNET
 {
@@ -33,7 +34,10 @@ namespace RestWithASPNET
             services.AddApiVersioning();
 
             //dependency injection
-            services.AddScoped<ipersonservice, personServiceImplementation>();
+            services.AddScoped<ipersonbusiness, personBusinessImplementation>();
+
+            services.AddScoped<Repository.ipersonrepository, personRepositoryImplementation>();
+
     
         }
 

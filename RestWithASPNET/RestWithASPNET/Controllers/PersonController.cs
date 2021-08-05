@@ -1,37 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RestWithASPNET.Model;
-using RestWithASPNET.Services;
+using RestWithASPNET.Business;
 
 namespace RestWithASPNET.Controllers
 {
     [ApiVersion("1")]
     [ApiController]
-    [Route("api/[controller]/v{version:apiVersion}")]
+    [Route("api/[controller]/v{version:apiVersion}")] //aspnet core descobre, atraves da rota,
+                                                      //a qual controller a 
+                                                      //requisição pertence
     public class PersonController : ControllerBase{
         
 
         private readonly ILogger<PersonController> _logger;
-        private ipersonservice _personservice;
+        private ipersonbusiness _personbusiness;
 
 
-        public PersonController(ILogger<PersonController> logger, ipersonservice personservice){
-            _personservice = personservice;
+        public PersonController(ILogger<PersonController> logger, ipersonbusiness personbusiness){
+            _personbusiness = personbusiness;
             _logger = logger;
         }
 
         [HttpGet]
         public IActionResult get(){
-            return Ok(_personservice.findall());
+            return Ok(_personbusiness.findall());
         }
         
         [HttpGet("{id}")] //verbos get nao ambiguos
         public IActionResult get(long id){
-            var person = _personservice.findbyid(id);
+            var person = _personbusiness.findbyid(id);
             if(person == null)
             {
                 return NotFound();
@@ -51,7 +49,7 @@ namespace RestWithASPNET.Controllers
             }
             else
             {
-                return Ok(_personservice.create(person));
+                return Ok(_personbusiness.create(person));
             }
             
         }
@@ -64,7 +62,7 @@ namespace RestWithASPNET.Controllers
             }
             else
             {
-                return Ok(_personservice.update(person));
+                return Ok(_personbusiness.update(person));
             }
             
         }
@@ -72,7 +70,7 @@ namespace RestWithASPNET.Controllers
         [HttpDelete("{id}")] //verbos get nao ambiguos
         public IActionResult delete(long id)
         {
-            _personservice.delete(id);
+            _personbusiness.delete(id);
            return NoContent();
            
 

@@ -6,12 +6,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RestWithASPNET.Services.Implementations{
-    public class personServiceImplementation : ipersonservice{
+namespace RestWithASPNET.Repository.Implementations{
+    public class personRepositoryImplementation : ipersonrepository{
         private MySQLContext _context; 
 
         // construtor. recebe injecao do context
-        public personServiceImplementation(MySQLContext context){ 
+        public personRepositoryImplementation(MySQLContext context){ 
             _context = context;
 
         }
@@ -59,7 +59,7 @@ namespace RestWithASPNET.Services.Implementations{
 
         //atualiza informacoes de uma pessoa, recebe o objeto todo e substitui no bd
         public Person update(Person person){
-            if (!Exists(person.id)){
+            if (!exists(person.id)){
                 return new Person(); //se nao existe, cria
             }
             var result = _context.People.SingleOrDefault(p => p.id.Equals(person.id));
@@ -77,7 +77,7 @@ namespace RestWithASPNET.Services.Implementations{
 
 
         //verifica se uma pessoa existe pelo seu id
-        private bool Exists(long id){
+        public bool exists(long id){
             return _context.People.Any(p => p.id.Equals(id));
         }
     }
