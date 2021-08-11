@@ -14,5 +14,6 @@ namespace RestWithASPNET.Model.Context
 
         }
         public DbSet<Person> People { get; set; } //similar a uma lista
+        public DbSet<Book> Book { get; set; } //similar a uma lista
     }
 }
