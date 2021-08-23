@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using RestWithASPNET.Model.Context;
 using RestWithASPNET.Business;
 using RestWithASPNET.Business.Implementations;
-using RestWithASPNET.Repository.Implementations;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -52,8 +51,6 @@ namespace RestWithASPNET
 
             //dependency injection
             services.AddScoped<ipersonbusiness, personBusinessImplementation>();
-            services.AddScoped<Repository.ipersonrepository, personRepositoryImplementation>();
-
             services.AddScoped<ibookbusiness, bookBusinessImplementation>();
 
             IServiceCollection serviceCollection = services.AddScoped(typeof(irepository<>), typeof(GenericRepository<>));

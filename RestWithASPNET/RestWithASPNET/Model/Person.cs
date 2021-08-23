@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using RestWithASPNET.Model.Base;
 
 namespace RestWithASPNET.Model
 {
 
     //mapeando entidades com [TABLE] E [COLUMN]
     [Table("person")]
-    public class Person
-    {
-        [Column("id")]
-        public long id { get; set; }
+    public class Person : BaseEntity{
 
         [Column("address")]
         public string address { get; set; }

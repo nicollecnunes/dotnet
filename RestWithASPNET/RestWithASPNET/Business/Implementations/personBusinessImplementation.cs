@@ -1,18 +1,14 @@
 ﻿using RestWithASPNET.Model;
-using RestWithASPNET.Model.Context;
 using RestWithASPNET.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+
 
 namespace RestWithASPNET.Business.Implementations{
     public class personBusinessImplementation : ipersonbusiness{
-        private readonly ipersonrepository _repository; 
+        private readonly irepository<Person> _repository; 
 
         // construtor. recebe injecao do context
-        public personBusinessImplementation(ipersonrepository repository){ 
+        public personBusinessImplementation(irepository<Person> repository){ 
             _repository = repository;
 
         }
