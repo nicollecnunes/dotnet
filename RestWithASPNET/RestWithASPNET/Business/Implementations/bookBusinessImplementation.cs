@@ -1,18 +1,13 @@
 ﻿using RestWithASPNET.Model;
-using RestWithASPNET.Model.Context;
 using RestWithASPNET.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace RestWithASPNET.Business.Implementations{
     public class bookBusinessImplementation : ibookbusiness{
-        private readonly ibookrepository _repository; 
+        private readonly irepository<Book> _repository; //irepository do tipo book
 
         // construtor. recebe injecao do context
-        public bookBusinessImplementation(ibookrepository repository){ 
+        public bookBusinessImplementation(irepository<Book> repository){ 
             _repository = repository;
 
         }

@@ -12,6 +12,8 @@ using RestWithASPNET.Repository.Implementations;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using RestWithASPNET.Repository;
+using RestWithASPNET.Repository.Generic;
 
 namespace RestWithASPNET
 {
@@ -53,7 +55,8 @@ namespace RestWithASPNET
             services.AddScoped<Repository.ipersonrepository, personRepositoryImplementation>();
 
             services.AddScoped<ibookbusiness, bookBusinessImplementation>();
-            services.AddScoped<Repository.ibookrepository, bookRepositoryImplementation>();
+
+            IServiceCollection serviceCollection = services.AddScoped(typeof(irepository<>), typeof(GenericRepository<>));
 
     
         }
