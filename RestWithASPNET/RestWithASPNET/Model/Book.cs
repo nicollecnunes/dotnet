@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using RestWithASPNET.Model.Base;
 
 namespace RestWithASPNET.Model
 {
 
     //mapeando entidades com [TABLE] E [COLUMN]
     [Table("books")]
-    public class Book
-    {
-        [Column("id")]
-        public long id { get; set; }
+    public class Book : BaseEntity{ //estende a entidade base. remove id pq vai herdar
 
         [Column("author")]
         public string author { get; set; }
