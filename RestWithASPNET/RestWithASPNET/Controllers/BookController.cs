@@ -42,7 +42,7 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPost] 
-        public IActionResult post([FromBody] Book book){
+        public IActionResult post([FromBody] BookVO book){
             if(book == null)
             {
                 return BadRequest();
@@ -55,7 +55,7 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPut] 
-        public IActionResult put([FromBody] Book book){
+        public IActionResult put([FromBody] BookVO book){
             if(book == null)
             {
                 return BadRequest();
