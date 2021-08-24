@@ -1,20 +1,26 @@
-﻿using RestWithASPNET.Model;
+﻿using RestWithASPNET.Data.Converter.Implementations;
+using RestWithASPNET.Model;
 using RestWithASPNET.Repository;
 using System.Collections.Generic;
 
 namespace RestWithASPNET.Business.Implementations{
     public class bookBusinessImplementation : ibookbusiness{
         private readonly irepository<Book> _repository; //irepository do tipo book
+        private readonly BookConverter _converter;
 
         // construtor. recebe injecao do context
         public bookBusinessImplementation(irepository<Book> repository){ 
             _repository = repository;
+            _converter = new BookConverter();
 
         }
 
         //metodo create. recebe o objeto pessoa
-        public Book create(Book book){
-            return _repository.create(book);
+        public BookVO create(BookVO book){
+            var bookEntity = _converter.parse(book);
+            bookEntity = _repository.create(bookEntity);
+
+            return _converter.parse(bookEntity);
         }
 
 
@@ -25,20 +31,22 @@ namespace RestWithASPNET.Business.Implementations{
 
 
         //lista todas as pessoas cadastradas
-        public List<Book> findall(){
-            return _repository.findall();
+        public List<BookVO> findall(){
+            return _converter.parse(_repository.findall());
         }
 
        
         //encontra uma pessoa especifica pela PK
-        public Book findbyid(long id){
-            return _repository.findbyid(id); //retorna um p que tenha id == id recebido
+        public BookVO findbyid(long id){
+            return _converter.parse(_repository.findbyid(id)); //retorna um p que tenha id == id recebido
         }
 
 
         //atualiza informacoes de uma pessoa, recebe o objeto todo e substitui no bd
-        public Book update(Book book){
-            return _repository.update(book);
+        public BookVO update(BookVO book){
+            var bookEntity = _converter.parse(book);
+            bookEntity = _repository.create(bookEntity);
+            return _converter.parse(bookEntity);
         }
 
     }

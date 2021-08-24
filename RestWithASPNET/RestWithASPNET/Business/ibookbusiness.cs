@@ -5,10 +5,10 @@ namespace RestWithASPNET.Business
 {
     public interface ibookbusiness
     {
-        Book create(Book book);
-        Book findbyid(long id);
-        List<Book> findall();
-        Book update(Book book);
+        BookVO create(BookVO book);
+        BookVO findbyid(long id);
+        List<BookVO> findall();
+        BookVO update(BookVO book);
         void delete(long id);
         
     }
