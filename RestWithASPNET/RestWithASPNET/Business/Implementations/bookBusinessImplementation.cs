@@ -11,7 +11,7 @@ namespace RestWithASPNET.Business.Implementations{
         // construtor. recebe injecao do context
         public bookBusinessImplementation(irepository<Book> repository){ 
             _repository = repository;
-            _converter = new BookConverter();
+            _converter = new BookConverter(); //used on update and create
 
         }
 
