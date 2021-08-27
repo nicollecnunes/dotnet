@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RestWithASPNET.Data.VO;
 using RestWithASPNET.Model;
 
 namespace RestWithASPNET.Business

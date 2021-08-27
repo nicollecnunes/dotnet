@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using RestWithASPNET.Model;
 using RestWithASPNET.Business;
 using RestWithASPNET.Data.VO;
+using RestWithASPNET.Hypermedia.Filters;
 
 namespace RestWithASPNET.Controllers
 {
@@ -24,11 +25,13 @@ namespace RestWithASPNET.Controllers
         }
 
         [HttpGet]
+        [TypeFilter(typeof(hypermediafilter))]
         public IActionResult get(){
             return Ok(_personbusiness.findall());
         }
         
         [HttpGet("{id}")] //verbos get nao ambiguos
+        [TypeFilter(typeof(hypermediafilter))]
         public IActionResult get(long id){
             var person = _personbusiness.findbyid(id);
             if(person == null)
@@ -43,6 +46,7 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPost] 
+        [TypeFilter(typeof(hypermediafilter))]
         public IActionResult post([FromBody] PersonVO person){
             if(person == null)
             {
@@ -56,6 +60,7 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPut] 
+        [TypeFilter(typeof(hypermediafilter))]
         public IActionResult put([FromBody] PersonVO person){
             if(person == null)
             {

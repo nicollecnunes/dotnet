@@ -1,8 +1,8 @@
 using System.Collections.Generic;
  
 namespace RestWithASPNET.Hypermedia.Abstract{
-    public interface isuporthypermedia{
-        List<HyperMediaLink> Links {get; set;}
+    public interface isupporthypermedia{
+        List<hypermedialink> Links {get; set;}
 
     }
 }

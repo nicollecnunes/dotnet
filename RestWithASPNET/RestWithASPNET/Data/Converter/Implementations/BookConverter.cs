@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RestWithASPNET.Data.Converter.Contract;
+using RestWithASPNET.Data.VO;
 using RestWithASPNET.Model;
 
 namespace RestWithASPNET.Data.Converter.Implementations{

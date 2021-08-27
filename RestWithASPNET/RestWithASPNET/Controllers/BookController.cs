@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using RestWithASPNET.Model;
 using RestWithASPNET.Business;
+using RestWithASPNET.Hypermedia.Filters;
+using RestWithASPNET.Data.VO;
 
 namespace RestWithASPNET.Controllers
 {
@@ -23,11 +25,13 @@ namespace RestWithASPNET.Controllers
         }
 
         [HttpGet]
+        [TypeFilter(typeof(hypermediafilter))]
         public IActionResult get(){
             return Ok(_bookbusiness.findall());
         }
         
         [HttpGet("{id}")] //verbos get nao ambiguos
+        [TypeFilter(typeof(hypermediafilter))]
         public IActionResult get(long id){
             var book = _bookbusiness.findbyid(id);
             if(book == null)
@@ -42,6 +46,7 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPost] 
+        [TypeFilter(typeof(hypermediafilter))]
         public IActionResult post([FromBody] BookVO book){
             if(book == null)
             {
@@ -55,6 +60,7 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPut] 
+        [TypeFilter(typeof(hypermediafilter))]
         public IActionResult put([FromBody] BookVO book){
             if(book == null)
             {
