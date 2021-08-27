@@ -16,6 +16,8 @@ using RestWithASPNET.Repository.Generic;
 using Microsoft.Net.Http.Headers;
 using RestWithASPNET.Hypermedia.Filters;
 using RestWithASPNET.Hypermedia.Enricher;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace RestWithASPNET
 {
@@ -66,6 +68,20 @@ namespace RestWithASPNET
             //versioning api
             services.AddApiVersioning();
 
+            //sweggar
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo{
+                        Title = "dotnet nicolle",
+                        Version = "v1",
+                        Description = "c# fictício para estudo backend",
+                        Contact = new OpenApiContact{
+                            Name = "nicolle nunes",
+                            Url = new Uri("https://github.com/nicollecnunes")
+                        }
+                    });
+            });
+
             //dependency injection
             services.AddScoped<ipersonbusiness, personBusinessImplementation>();
             services.AddScoped<ibookbusiness, bookBusinessImplementation>();
@@ -86,6 +102,16 @@ namespace RestWithASPNET
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseSwagger(); //gera o JSON com a documentacao
+
+            app.UseSwaggerUI(c =>{
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "nico v1");
+            }); //gera a pagina HTML
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
 
             app.UseAuthorization();
 
