@@ -4,6 +4,7 @@ using RestWithASPNET.Model;
 using RestWithASPNET.Business;
 using RestWithASPNET.Data.VO;
 using RestWithASPNET.Hypermedia.Filters;
+using System.Collections.Generic;
 
 namespace RestWithASPNET.Controllers
 {
@@ -25,12 +26,20 @@ namespace RestWithASPNET.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType((200), Type = typeof(List<PersonVO>))] //padrao ok
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(hypermediafilter))]
         public IActionResult get(){
             return Ok(_personbusiness.findall());
         }
         
         [HttpGet("{id}")] //verbos get nao ambiguos
+        [ProducesResponseType((200), Type = typeof(PersonVO))] //padrao ok
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(hypermediafilter))]
         public IActionResult get(long id){
             var person = _personbusiness.findbyid(id);
@@ -46,6 +55,9 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPost] 
+        [ProducesResponseType((200), Type = typeof(PersonVO))] //padrao ok
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(hypermediafilter))]
         public IActionResult post([FromBody] PersonVO person){
             if(person == null)
@@ -60,6 +72,9 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPut] 
+        [ProducesResponseType((200), Type = typeof(PersonVO))] //padrao ok
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(hypermediafilter))]
         public IActionResult put([FromBody] PersonVO person){
             if(person == null)
@@ -74,6 +89,9 @@ namespace RestWithASPNET.Controllers
         }
 
         [HttpDelete("{id}")] //verbos get nao ambiguos
+        [ProducesResponseType(204)] //padrao ok
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult delete(long id)
         {
             _personbusiness.delete(id);

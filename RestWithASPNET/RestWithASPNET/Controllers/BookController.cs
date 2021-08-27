@@ -4,6 +4,7 @@ using RestWithASPNET.Model;
 using RestWithASPNET.Business;
 using RestWithASPNET.Hypermedia.Filters;
 using RestWithASPNET.Data.VO;
+using System.Collections.Generic;
 
 namespace RestWithASPNET.Controllers
 {
@@ -25,12 +26,20 @@ namespace RestWithASPNET.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType((200), Type = typeof(List<BookVO>))] //padrao ok
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(hypermediafilter))]
         public IActionResult get(){
             return Ok(_bookbusiness.findall());
         }
         
         [HttpGet("{id}")] //verbos get nao ambiguos
+        [ProducesResponseType((200), Type = typeof(BookVO))] //padrao ok
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(hypermediafilter))]
         public IActionResult get(long id){
             var book = _bookbusiness.findbyid(id);
@@ -46,6 +55,9 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPost] 
+        [ProducesResponseType((200), Type = typeof(BookVO))] //padrao ok
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(hypermediafilter))]
         public IActionResult post([FromBody] BookVO book){
             if(book == null)
@@ -60,6 +72,9 @@ namespace RestWithASPNET.Controllers
         }
         
         [HttpPut] 
+        [ProducesResponseType((200), Type = typeof(BookVO))] //padrao ok
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(hypermediafilter))]
         public IActionResult put([FromBody] BookVO book){
             if(book == null)
@@ -74,6 +89,9 @@ namespace RestWithASPNET.Controllers
         }
 
         [HttpDelete("{id}")] //verbos get nao ambiguos
+        [ProducesResponseType(204)] //padrao ok
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult delete(long id)
         {
             _bookbusiness.delete(id);
