@@ -54,12 +54,12 @@ namespace RestWithASPNET
                 options.RespectBrowserAcceptHeader = true; //aceita a propriedade do cabeçalho
                 options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
                 options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
-            }).AddXmlSerializerFormatters();
+            });//.AddXmlSerializerFormatters();
 
             var filteropt = new hypermediafilteroptions();
-            filteropt.contentresponseenricherlist.Add(new personEnricher());
+            //filteropt.contentresponseenricherlist.Add(new personEnricher());
 
-            filteropt.contentresponseenricherlist.Add(new booknEnricher());
+            //filteropt.contentresponseenricherlist.Add(new booknEnricher());
 
             services.AddSingleton(filteropt);
 
