@@ -42,6 +42,14 @@ namespace RestWithASPNET
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors(options => {
+                options.AddDefaultPolicy(builder =>{
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+
+                });
+            });
             services.AddControllers();
 
             var connection = Configuration["MySQLConnection:MySQLConnectionString"]; //pega a string de conexao
@@ -101,7 +109,10 @@ namespace RestWithASPNET
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
+            app.UseRouting(); 
+            //cors deve estar depois de usehttpsredirevction, depois de useroting
+            //e antes de use endpoints
+            app.UseCors();
 
             app.UseSwagger(); //gera o JSON com a documentacao
 
