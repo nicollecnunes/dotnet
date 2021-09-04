@@ -18,6 +18,13 @@ using RestWithASPNET.Hypermedia.Filters;
 using RestWithASPNET.Hypermedia.Enricher;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
+using RestWithASPNET.Services;
+using RestWithASPNET.Configurations;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithASPNET
 {
@@ -41,6 +48,36 @@ namespace RestWithASPNET
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var TokenConfigurations =  new TokenConfiguration();
+
+            new ConfigureFromConfigurationOptions<TokenConfiguration>(
+                Configuration.GetSection("TokenConfigurations") //vem la do app setings
+            ).Configure(TokenConfigurations);
+
+            services.AddSingleton(TokenConfigurations); //so uma config
+
+            services.AddAuthentication(options =>{
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters{
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(TokenConfigurations.secret)),
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = TokenConfigurations.issuer,
+                    ValidAudience = TokenConfigurations.audience,
+
+                };
+            });
+
+            services.AddAuthorization(auth => {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser().Build());
+            });
 
             services.AddCors(options => {
                 options.AddDefaultPolicy(builder =>{
@@ -93,8 +130,13 @@ namespace RestWithASPNET
             //dependency injection
             services.AddScoped<ipersonbusiness, personBusinessImplementation>();
             services.AddScoped<ibookbusiness, bookBusinessImplementation>();
+            services.AddScoped<iloginbusiness, loginbusinessImplementation>();
 
-            IServiceCollection serviceCollection = services.AddScoped(typeof(irepository<>), typeof(GenericRepository<>));
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+
+            services.AddScoped(typeof(irepository<>), typeof(GenericRepository<>));
 
     
         }

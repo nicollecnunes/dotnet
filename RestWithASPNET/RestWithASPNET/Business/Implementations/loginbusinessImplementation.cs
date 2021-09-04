@@ -39,9 +39,12 @@ namespace RestWithASPNET.Business.Implementations{
 
             user.refreshtoken = refreshToken;
             user.refreshtokenexpirytime = DateTime.Now.AddDays(_config.daystoExpire); //pega do appsetings
-
+            _repo.RefreshUserInfo(user);
+            
             DateTime createDate = DateTime.Now;
             DateTime expirationDate = createDate.AddMinutes(_config.minutes);
+
+            
 
             return new TokenVO(
                 true,
