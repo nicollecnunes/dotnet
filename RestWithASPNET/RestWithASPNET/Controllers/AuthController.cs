@@ -57,10 +57,10 @@ namespace RestWithASPNET.Controllers
 
         [HttpGet]
         [Route ("revoke")]
-        [Authorize("Bearer")]
+        [Authorize("Bearer")] //pra identificar qual token sera revogado
         public IActionResult revoke(){
-            var username = User.Identity.Name;
-            var result = _loginbusiness.RevokeToken(username);
+            var username = User.Identity.Name; //pega a PK que nao e o id
+            var result = _loginbusiness.RevokeToken(username); //true or false
 
             if (!result){
                 return BadRequest("INVALID CLIENT REQUEST"); 
