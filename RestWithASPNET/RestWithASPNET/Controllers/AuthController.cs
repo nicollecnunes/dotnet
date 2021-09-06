@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using RestWithASPNET.Model;
 using RestWithASPNET.Business;
-using RestWithASPNET.Hypermedia.Filters;
 using RestWithASPNET.Data.VO;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithASPNET.Controllers
 {
@@ -25,16 +22,50 @@ namespace RestWithASPNET.Controllers
         [Route("signin")]
         public IActionResult signin([FromBody] UserVO user)
         {
+            System.Console.WriteLine("username == ", user.username);
             if(user == null)
             {
                 return BadRequest("Invalid Client Request");
             }
-            var token = _loginbusiness.ValidateCredentials(user);
+            System.Console.WriteLine("linha 30 - authcontroller");
+            var token = _loginbusiness.validateCredentials(user);
+            
             if(token == null){
+                System.Console.WriteLine("linha 32 - authcontroller: token nulo");
                 return Unauthorized();
-            }else{
-               return Ok(token); 
             }
+            return Ok(token); 
+            
+        }
+
+        [HttpGet]
+        [Route("refresh")]
+        public IActionResult refresh([FromBody] TokenVO tokenvo)
+        {
+            if (tokenvo == null)
+            {
+                return BadRequest("Invalid client request");
+            }
+
+            var token = _loginbusiness.validateCredentials(tokenvo);
+            if(token == null)
+            {
+                return BadRequest("Invalid client request");
+            }
+            return Ok(token);
+        }
+
+        [HttpGet]
+        [Route ("revoke")]
+        [Authorize("Bearer")]
+        public IActionResult revoke(){
+            var username = User.Identity.Name;
+            var result = _loginbusiness.RevokeToken(username);
+
+            if (!result){
+                return BadRequest("INVALID CLIENT REQUEST"); 
+            }
+            return NoContent();
         }
     }
 

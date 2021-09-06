@@ -22,11 +22,14 @@ namespace RestWithASPNET.Business.Implementations{
             _tkService = tkService;
         }
 
-        public TokenVO ValidateCredentials(UserVO userCredentials)
+        public TokenVO validateCredentials(UserVO userCredentials)
         {
+            System.Console.WriteLine("linha 27 - login business implementation");
             var user = _repo.validateCredentials(userCredentials);
-            if(user == null)
+            
+            if(user is null)
             {
+                System.Console.WriteLine("linha 31 - login business implementation: user nulo");
                 return null;
             }
            
@@ -53,6 +56,47 @@ namespace RestWithASPNET.Business.Implementations{
                 accessToken,
                 refreshToken
             );
+        }
+
+        public TokenVO validateCredentials(TokenVO token){
+            var accessToken =  token.AccessToken;
+            var refreshToken = token.RefreshToken;
+
+            var principal = _tkService.getprincipalfromexpiredtk(accessToken);
+            var username = principal.Identity.Name;
+
+            var user = _repo.validateCredentials(username);
+
+            if (user == null ||
+                user.refreshtoken != refreshToken ||
+                user.refreshtokenexpirytime <= DateTime.Now)
+            {
+                    return null;
+            }
+
+            accessToken = _tkService.generateaccesstk(principal.Claims);
+            refreshToken = _tkService.generaterefreshtk();
+
+            user.refreshtoken = refreshToken;
+
+            _repo.RefreshUserInfo(user);
+
+            DateTime createDate = DateTime.Now;
+            DateTime expirationDate = createDate.AddMinutes(_config.minutes);
+
+            return new TokenVO(
+                true,
+                createDate.ToString(DATE_FORMAT),
+                expirationDate.ToString(DATE_FORMAT),
+                accessToken,
+                refreshToken
+            );
+
+        }
+
+        public bool RevokeToken(string username)
+        {
+            return _repo.RevokeToken(username);
         }
     }
 }

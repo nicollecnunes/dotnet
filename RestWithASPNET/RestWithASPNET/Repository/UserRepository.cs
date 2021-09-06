@@ -12,7 +12,6 @@ namespace RestWithASPNET.Repository{
     { //implementa isuerrep
 
         private readonly MySQLContext _context;
-        private DbSet<User> dataset;
 
         public UserRepository(MySQLContext context) //construtor
         {
@@ -28,22 +27,23 @@ namespace RestWithASPNET.Repository{
         }
 
         public User RefreshUserInfo(User user){
-            if(!_context.User.Any(user => user.id.Equals(user.id))){ //se nao existir
+            if(!_context.User.Any(u => u.id.Equals(user.id))){ //se nao existir
                 return null;
-            }else{
-                var result = _context.User.SingleOrDefault(p => p.id.Equals(user.id));
-                if (result != null){
-                    try{
-                        _context.Entry(result).CurrentValues.SetValues(user);
-                        _context.SaveChanges();
-                        return(result);
-                    }catch(Exception){
-                        throw;
-                    }
-                }
-                return result;
             }
-            
+            var result = _context.User.SingleOrDefault(p => p.id.Equals(user.id));
+
+            if (result != null){
+                try{
+                     _context.Entry(result).CurrentValues.SetValues(user);
+                     _context.SaveChanges();
+                     return(result);
+                }
+                catch(Exception)
+                {
+                    throw;
+                }
+            }
+                return result;
         }
 
         private string ComputeHash(string input, SHA256CryptoServiceProvider algorithm) //encriptar a senha
@@ -52,6 +52,23 @@ namespace RestWithASPNET.Repository{
             byte[] hashed = algorithm.ComputeHash(inputbytes);
 
             return BitConverter.ToString(hashed);
+        }
+
+        public User validateCredentials(string username)
+        {
+            return _context.User.SingleOrDefault(u => (u.username == username));
+        }
+
+        public bool RevokeToken(string username)
+        {
+            var user = _context.User.SingleOrDefault( u => (u.username == username));
+
+            if (user is null){
+                return false;
+            }
+            user.refreshtoken = null;
+            _context.SaveChanges();
+            return true;
         }
     }
 }

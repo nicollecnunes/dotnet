@@ -5,11 +5,13 @@ using RestWithASPNET.Business;
 using RestWithASPNET.Data.VO;
 using RestWithASPNET.Hypermedia.Filters;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithASPNET.Controllers
 {
     [ApiVersion("1")]
     [ApiController]
+    [Authorize("Bearer")]
     [Route("api/[controller]/v{version:apiVersion}")] //aspnet core descobre, atraves da rota,
                                                       //a qual controller a 
                                                       //requisição pertence

@@ -2,6 +2,10 @@ using RestWithASPNET.Data.VO;
 
 namespace RestWithASPNET.Business{
     public interface iloginbusiness{
-        TokenVO ValidateCredentials(UserVO user);
+        TokenVO validateCredentials(UserVO user);
+
+        TokenVO validateCredentials(TokenVO token);
+
+        bool RevokeToken(string username);
     }
 }
