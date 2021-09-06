@@ -24,12 +24,12 @@ namespace RestWithASPNET.Business.Implementations{
 
         public TokenVO validateCredentials(UserVO userCredentials)
         {
-            System.Console.WriteLine("linha 27 - login business implementation");
+            //System.Console.WriteLine("linha 27 - login business implementation");
             var user = _repo.validateCredentials(userCredentials);
             
             if(user is null)
             {
-                System.Console.WriteLine("linha 31 - login business implementation: user nulo");
+                //System.Console.WriteLine("linha 31 - login business implementation: user nulo");
                 return null;
             }
            

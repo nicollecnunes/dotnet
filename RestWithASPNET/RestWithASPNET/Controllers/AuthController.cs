@@ -22,16 +22,16 @@ namespace RestWithASPNET.Controllers
         [Route("signin")]
         public IActionResult signin([FromBody] UserVO user)
         {
-            System.Console.WriteLine("username == ", user.username);
+            //System.Console.WriteLine("username == ", user.username);
             if(user == null)
             {
                 return BadRequest("Invalid Client Request");
             }
-            System.Console.WriteLine("linha 30 - authcontroller");
+            //System.Console.WriteLine("linha 30 - authcontroller");
             var token = _loginbusiness.validateCredentials(user);
             
             if(token == null){
-                System.Console.WriteLine("linha 32 - authcontroller: token nulo");
+                //System.Console.WriteLine("linha 32 - authcontroller: token nulo");
                 return Unauthorized();
             }
             return Ok(token); 
