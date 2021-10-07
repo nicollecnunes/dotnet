@@ -13,11 +13,11 @@ namespace RestWithASPNET.Data.Converter.Implementations{
                 return null;
             }else{
                 return new Person{
-                    id = o.id,
-                    fname = o.fname,
-                    lname = o.lname,
-                    address = o.address,
-                    gender = o.gender
+                    id = o.Id,
+                    Fname = o.Fname,
+                    Lname = o.Lname,
+                    Address = o.Address,
+                    Gender = o.Gender
                 };
             }
         }
@@ -37,11 +37,11 @@ namespace RestWithASPNET.Data.Converter.Implementations{
                 return null;
             }else{
                 return new PersonVO{ //mapeia o objeto
-                    id = o.id,
-                    fname = o.fname,
-                    lname = o.lname,
-                    address = o.address,
-                    gender = o.gender
+                    Id = o.id,
+                    Fname = o.Fname,
+                    Lname = o.Lname,
+                    Address = o.Address,
+                    Gender = o.Gender
                 };
             }
         }

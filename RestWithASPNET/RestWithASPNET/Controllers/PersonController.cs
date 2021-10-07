@@ -103,6 +103,20 @@ namespace RestWithASPNET.Controllers
         }
 
 
+        [HttpPatch("{id}")] //verbos get nao ambiguos
+        [ProducesResponseType((200), Type = typeof(PersonVO))] //padrao ok
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(hypermediafilter))]
+        public IActionResult Patch(long id)
+        {
+            var person = _personbusiness.Disable(id);      
+            return Ok(person);
+
+        }
+
+
 
     }
 }

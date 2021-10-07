@@ -11,7 +11,7 @@ namespace RestWithASPNET.Hypermedia.Enricher{
         protected override Task enrichmodel(PersonVO content, IUrlHelper urlHelper)
         {
             var path = "api/person/v1";
-            string link = getLink(content.id, urlHelper, path);
+            string link = getLink(content.Id, urlHelper, path);
             content.Links.Add(new hypermedialink(){
                 action = httpactionverb.GET,
                 Href = link,
@@ -33,6 +33,15 @@ namespace RestWithASPNET.Hypermedia.Enricher{
                 Href = link,
                 rel = relationtype.self,
                 type = responsetypeformat.DefaultPut
+
+            });
+
+            content.Links.Add(new hypermedialink()
+            {
+                action = httpactionverb.PATCH,
+                Href = link,
+                rel = relationtype.self,
+                type = responsetypeformat.DefaultPatch
 
             });
 

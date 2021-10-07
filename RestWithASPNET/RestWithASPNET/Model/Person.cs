@@ -9,16 +9,19 @@ namespace RestWithASPNET.Model
     public class Person : BaseEntity{
 
         [Column("address")]
-        public string address { get; set; }
+        public string Address { get; set; }
 
         [Column("fname")]
-        public string fname { get; set; }
+        public string Fname { get; set; }
 
         [Column("gender")] //igual escrito no BD
-        public string gender { get; set; }
+        public string Gender { get; set; }
+        
+        [Column("enabled")] //igual escrito no BD
+        public bool Enabled { get; set; }
 
         [Column("lname")]
-        public string lname { get; set; }
+        public string Lname { get; set; }
 
         
 

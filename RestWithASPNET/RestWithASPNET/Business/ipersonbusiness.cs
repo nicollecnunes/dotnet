@@ -9,6 +9,7 @@ namespace RestWithASPNET.Business
         PersonVO findbyid(long id);
         List<PersonVO> findall();
         PersonVO update(PersonVO person);
+        PersonVO Disable(long id);
         void delete(long id);
         
     }

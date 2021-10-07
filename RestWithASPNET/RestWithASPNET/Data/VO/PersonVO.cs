@@ -5,11 +5,12 @@ using RestWithASPNET.Hypermedia.Abstract;
 namespace RestWithASPNET.Data.VO{ //value object
 
     public class PersonVO : isupporthypermedia{
-        public long id {get; set;}
-        public string address { get; set; }
-        public string fname { get; set; }
-        public string gender { get; set; }
-        public string lname { get; set; }
+        public long Id {get; set;}
+        public string Address { get; set; }
+        public string Fname { get; set; }
+        public string Gender { get; set; }
+        public string Lname { get; set; }
+        public bool Enabled { get; set; }
         public List<hypermedialink> Links { get; set ;} = new List<hypermedialink>();
     }
 }

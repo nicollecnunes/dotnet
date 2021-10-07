@@ -6,12 +6,13 @@ using System.Collections.Generic;
 
 
 namespace RestWithASPNET.Business.Implementations{
-    public class personBusinessImplementation : ipersonbusiness{
-        private readonly irepository<Person> _repository; 
+    public class personBusinessImplementation : ipersonbusiness
+    {
+        private readonly IPersonRepository _repository; 
         private readonly PersonConverter _converter;
 
         // construtor. recebe injecao do context
-        public personBusinessImplementation(irepository<Person> repository){ 
+        public personBusinessImplementation(IPersonRepository repository){ 
             _repository = repository;
             _converter = new PersonConverter();
 
@@ -31,6 +32,12 @@ namespace RestWithASPNET.Business.Implementations{
         //deleta a pessoa pelo id, nao pelo objeto
         public void delete(long id){
             _repository.delete(id);
+        }
+
+        public PersonVO Disable(long id)
+        {
+            var personEntity = _repository.Disable(id);
+            return _converter.parse(personEntity);
         }
 
 
